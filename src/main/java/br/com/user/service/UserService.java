@@ -2,6 +2,7 @@ package br.com.user.service;
 
 import java.util.UUID;
 
+import br.com.exception.NotFoundApplicationException;
 import br.com.user.entity.UserEntity;
 import br.com.user.json.UserCreate;
 import br.com.user.json.UserResponse;
@@ -42,8 +43,12 @@ public class UserService {
         return userResponse;
     }
 
-    public UserResponse get(String email) {
+    public UserResponse get(String email) throws NotFoundApplicationException {
         UserEntity user = UserEntity.find("email", email).firstResult();
+
+        if (user == null) {
+            throw new NotFoundApplicationException("User not found");
+        }
 
         UserResponse userResponse = new UserResponse();
         userResponse.setId(user.id);

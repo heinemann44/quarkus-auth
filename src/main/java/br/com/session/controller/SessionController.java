@@ -12,6 +12,7 @@ import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.core.NewCookie;
+import jakarta.ws.rs.core.NewCookie.SameSite;
 import jakarta.ws.rs.core.Response;
 
 @Path("/api/v1/sessions")
@@ -31,6 +32,7 @@ public class SessionController {
                 .path("/")
                 .secure(ApplicationEnvironment.isProduction())
                 .httpOnly(true)
+                .sameSite(SameSite.STRICT)
                 .maxAge(SessionService.EXPIRATION_IN_SECONDS)
                 .build();
 
