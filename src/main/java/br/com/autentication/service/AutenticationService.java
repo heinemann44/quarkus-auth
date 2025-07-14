@@ -14,6 +14,8 @@ import br.com.autentication.entity.RefreshTokenEntity;
 import br.com.autentication.exception.AutenticationInvalidRequestException;
 import br.com.autentication.json.LoginRequest;
 import br.com.autentication.json.TokenResponse;
+import br.com.email.EmailAWSServiceImpl;
+import br.com.email.dto.EmailRequest;
 import br.com.exception.ApplicationException;
 import br.com.session.service.AuthorizationService;
 import br.com.user.entity.UserEntity;
@@ -32,6 +34,9 @@ public class AutenticationService {
 
     @Inject
     private JWTParser jwtParser;
+
+    @Inject
+    private EmailAWSServiceImpl emailAWSService;
 
     @ConfigProperty(name = "quarkus.smallrye-jwt.new-token.lifespan")
     private Long accessTokenLifespan;
@@ -149,7 +154,13 @@ public class AutenticationService {
     }
 
     private void sendPinToEmail(String pin, String email) {
-        // TODO
+        EmailRequest emailRequest = new EmailRequest();
+
+        emailRequest.setTo(email);
+        emailRequest.setSubject("Pin");
+        emailRequest.setBody("Seu PIN: " + pin);
+
+        this.emailAWSService.send(emailRequest);
         System.out.println("PIN " + pin);
     }
 
