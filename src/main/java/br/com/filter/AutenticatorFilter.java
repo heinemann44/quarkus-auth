@@ -42,7 +42,7 @@ public class AutenticatorFilter {
     private UserService userService;
 
     private static final String[] IGNORED_PATHS = { "/api/v1/migrations", "/api/v1/users", "/api/v1/sessions",
-            "/api/v1/oauth/token", "/api/v1/oauth/refresh" };
+            "/api/v1/oauth" };
 
     @ServerRequestFilter
     public Uni<Response> filter() {
